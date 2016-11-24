@@ -2,7 +2,7 @@
 div#calendar{
     margin:0px auto;
     padding:0px;
-    width: 602px;
+    width: 960px;
     font-family:Helvetica, "Times New Roman", Times, serif;
 }
 
@@ -21,7 +21,7 @@ div#calendar div.header{
     position:absolute;
     left:11px;
     top:0px;
-    width:582px;
+    width:930px;
     height:40px;
     text-align:center;
 }
@@ -75,7 +75,7 @@ div#calendar ul.label li{
     margin-right:5px;
     float:left;
     list-style-type:none;
-    width:80px;
+    width:130px;
     height:40px;
     line-height:40px;
     vertical-align:middle;
@@ -104,8 +104,8 @@ div#calendar ul.dates li{
     vertical-align:top;
     float:left;
     list-style-type:none;
-    width:80px;
-    height:80px;
+    width:120px;
+    height:120px;
     font-size:12px;
     background-color: #DDD;
     color:#000;
