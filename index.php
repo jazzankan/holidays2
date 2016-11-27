@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Anders
+ * User: Anders Fredriksson
  * Date: 2016-11-21
  * Time: 22:06
  */
