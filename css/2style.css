@@ -97,15 +97,15 @@ div#calendar ul.dates{
 /** overall width = width+padding-right**/
 div#calendar ul.dates li{
     margin:0px;
-    padding:0px;
+    padding:3px;
     margin-right:5px;
     margin-top: 5px;
     line-height:12px;
     vertical-align:top;
     float:left;
     list-style-type:none;
-    width:130px;
-    height:130px;
+    width:125px;
+    height:125px;
     font-size:12px;
     background-color: #DDD;
     color:#000;
