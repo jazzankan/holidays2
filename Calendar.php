@@ -32,6 +32,8 @@ class Calendar {
 
     private $month = null;
 
+    private $weekText = "";
+
     /********************* PUBLIC **********************/
 
     /**
@@ -100,6 +102,8 @@ class Calendar {
      */
     private function _showDay($cellNumber){
 
+        $this->weekText = "";
+
         if($this->currentDay==0){
 
             $firstDayOfTheWeek = date('N',strtotime($this->currentYear.'-'.$this->currentMonth.'-01'));
@@ -115,20 +119,31 @@ class Calendar {
 
             $this->currentDate = date('Y-m-d',strtotime($this->currentYear.'-'.$this->currentMonth.'-'.($this->currentDay)));
 
-            $cellContent = $this->currentDay;
+            $cellDate = $this->currentDay;
+            if($cellNumber%7==1){
+                $week = date($this->currentDate);
+                $currentWeekNumber = date("W",strtotime($week));
+
+                $this->weekText = "Vecka: ".$currentWeekNumber." ";
+            }
 
             $this->currentDay++;
+
 
         }else{
 
             $this->currentDate =null;
 
-            $cellContent=null;
-        }
-
+            $cellDate=null;
+            if($cellNumber === 1) {
+                $week = date($this->currentYear.'-'.$this->currentMonth.'-01');
+                $currentWeekNumber = date("W",strtotime($week));
+                $this->weekText = "Vecka: ".$currentWeekNumber." ";
+              }
+            }
 
         return '<li id="li-'.$this->currentDate.'" class="'.($cellNumber%7==1?' start ':($cellNumber%7==0 || $cellNumber%7==6 ?' end ':' ')).
-        ($cellContent==null?'mask':'').'">'.$cellContent.'</li>';
+        ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'</li>';
     }
 
     /**
