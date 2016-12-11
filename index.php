@@ -6,11 +6,9 @@
  * Time: 22:06
  */
 require_once("Calendar.php");
+require_once("RedDays.php");
 $calendar = new Calendar();
 $calendar = $calendar->show();
-$redDays = file_get_contents("http://api.dryg.net/dagar/v2.1/2016/12");
-$redDays = json_decode($redDays);
-print_r($redDays=>'dagar');
 $html = <<<EOD
 <!DOCTYPE html>
 <html lang="sv">
