@@ -34,6 +34,19 @@ class Calendar {
 
     private $weekText = "";
 
+    private $workFree = "";
+
+    private $monthArray = array();
+
+    private function getMonthArray($selYear, $selMonth)
+    {
+        //$selectedYear = date("Y", $selYear);
+        //$selectedMonth = date("m", $selMonth );
+        $monthArray = new RedDays();
+        $monthArray = $monthArray->freeDays($selYear, $selMonth);
+        return $monthArray;
+    }
+
     /********************* PUBLIC **********************/
 
     /**
@@ -65,6 +78,8 @@ class Calendar {
 
         $this->currentMonth=$month;
 
+        $this->monthArray = $this->getMonthArray($this->currentYear, $this->currentMonth);
+
         $this->daysInMonth=$this->_daysInMonth($month,$year);
 
         $content='<div id="calendar">'.
@@ -93,7 +108,9 @@ class Calendar {
         $content.='</div>';
 
         $content.='</div>';
+
         return $content;
+
     }
 
     /********************* PRIVATE **********************/
@@ -103,6 +120,7 @@ class Calendar {
     private function _showDay($cellNumber){
 
         $this->weekText = "";
+        $this->workFree = "";
 
         if($this->currentDay==0){
 
@@ -118,6 +136,10 @@ class Calendar {
         if( ($this->currentDay!=0)&&($this->currentDay<=$this->daysInMonth) ){
 
             $this->currentDate = date('Y-m-d',strtotime($this->currentYear.'-'.$this->currentMonth.'-'.($this->currentDay)));
+
+            if (in_array($this->currentDate, $this->monthArray, true)) {
+                $this->workFree = "workfree";
+            }
 
             $cellDate = $this->currentDay;
             if($cellNumber%7==1){
@@ -142,7 +164,7 @@ class Calendar {
               }
             }
 
-        return '<li id="li-'.$this->currentDate.'" class="'.($cellNumber%7==1?' start ':($cellNumber%7==0 || $cellNumber%7==6 ?' end ':' ')).
+        return '<li id="li-'.$this->currentDate.'" class="'.$this->workFree. ''. ($cellNumber%7==1?' start ':($cellNumber%7==0 || $cellNumber%7==6 ?' end ':' ')).
         ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'</li>';
     }
 

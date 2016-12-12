@@ -121,6 +121,10 @@ div#calendar ul.dates li.end {
     background-color: #F2BDC0;
 }
 
+div#calendar ul.dates li.workfree {
+    background-color: #F2BDC0;
+}
+
 :focus{
     outline:none;
 }
