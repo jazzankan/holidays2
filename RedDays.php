@@ -9,7 +9,7 @@
 class RedDays
 {
 
-    public function freeDays ($selectedYear, $selectedMonth)
+   /* public function freeDays ($selectedYear, $selectedMonth)
     {
         $freeArray = array();
         $month = file_get_contents("http://api.dryg.net/dagar/v2.1/".$selectedYear."/".$selectedMonth."");
@@ -20,5 +20,18 @@ foreach ($month['dagar'] as $day) {
         }
       }
        return  $freeArray;
+    }*/
+
+    public function freeDays ($selectedYear, $selectedMonth)
+    {
+        $freeArray = array();
+        $month = file_get_contents("http://api.dryg.net/dagar/v2.1/".$selectedYear."/".$selectedMonth."");
+        $month = json_decode($month,true);
+        foreach ($month['dagar'] as $day) {
+            if($day['arbetsfri dag'] == "Ja" && isset($day['helgdag'])){
+                array_push($freeArray,array($day['datum'], $day['helgdag']));
+            }
+        }
+        return  $freeArray;
     }
 }

@@ -38,14 +38,6 @@ class Calendar {
 
     private $monthArray = array();
 
-    private function getMonthArray($selYear, $selMonth)
-    {
-        //$selectedYear = date("Y", $selYear);
-        //$selectedMonth = date("m", $selMonth );
-        $monthArray = new RedDays();
-        $monthArray = $monthArray->freeDays($selYear, $selMonth);
-        return $monthArray;
-    }
 
     /********************* PUBLIC **********************/
 
@@ -78,7 +70,10 @@ class Calendar {
 
         $this->currentMonth=$month;
 
-        $this->monthArray = $this->getMonthArray($this->currentYear, $this->currentMonth);
+        //Get workfree days from free API
+        $monthArray = new RedDays();
+        $monthArray = $monthArray->freeDays($year, $month);
+        $this->monthArray = $monthArray;
 
         $this->daysInMonth=$this->_daysInMonth($month,$year);
 
@@ -121,6 +116,7 @@ class Calendar {
 
         $this->weekText = "";
         $this->workFree = "";
+        $redDay = "";
 
         if($this->currentDay==0){
 
@@ -137,7 +133,9 @@ class Calendar {
 
             $this->currentDate = date('Y-m-d',strtotime($this->currentYear.'-'.$this->currentMonth.'-'.($this->currentDay)));
 
-            if (in_array($this->currentDate, $this->monthArray, true)) {
+            $redIndex = array_search($this->currentDate,array_column($this->monthArray, 0));
+            if($redIndex !== false) {
+                $redDay = $this->monthArray[$redIndex][1];
                 $this->workFree = "workfree";
             }
 
@@ -165,7 +163,7 @@ class Calendar {
             }
 
         return '<li id="li-'.$this->currentDate.'" class="'.$this->workFree. ''. ($cellNumber%7==1?' start ':($cellNumber%7==0 || $cellNumber%7==6 ?' end ':' ')).
-        ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'</li>';
+        ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'<span class="red">'.$redDay.'</span></li>';
     }
 
     /**

@@ -112,10 +112,15 @@ div#calendar ul.dates li{
     text-align:right;
 }
 div#calendar ul.dates li .week {
+     float:left;
+     font-weight: 600;
+     color: darkred;
+ }
+div#calendar ul.dates li .red {
     float:left;
-    font-weight: 600;
-    color: darkred;
+    padding: 5px;
 }
+
 
 div#calendar ul.dates li.end {
     background-color: #F2BDC0;
