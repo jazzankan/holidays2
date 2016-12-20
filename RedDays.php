@@ -8,6 +8,7 @@
  */
 class RedDays
 {
+
     public function freeDays ($selectedYear, $selectedMonth)
     {
         $freeArray = array();
@@ -16,6 +17,9 @@ class RedDays
         foreach ($month['dagar'] as $day) {
             if($day['arbetsfri dag'] == "Ja" && isset($day['helgdag'])){
                 array_push($freeArray,array($day['datum'], $day['helgdag']));
+            }
+            if(isset($day['klämdag'])){
+                array_push($freeArray,array($day['datum'], "Klämdag"));
             }
         }
         return  $freeArray;
