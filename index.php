@@ -7,6 +7,8 @@
  */
 require_once("Calendar.php");
 require_once("RedDays.php");
+require("CHoliday.php");
+
 $calendar = new Calendar();
 $calendar = $calendar->show();
 $html = <<<EOD

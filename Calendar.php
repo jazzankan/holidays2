@@ -38,6 +38,8 @@ class Calendar {
 
     private $monthArray = array();
 
+    private $numbersworking = "";
+
 
     /********************* PUBLIC **********************/
 
@@ -117,6 +119,7 @@ class Calendar {
         $this->weekText = "";
         $this->workFree = "";
         $redDay = "";
+        $this->numbersworking = "";
 
         if($this->currentDay==0){
 
@@ -137,6 +140,14 @@ class Calendar {
             if($redIndex !== false) {
                 $redDay = $this->monthArray[$redIndex][1];
                 $this->workFree = "workfree";
+            }
+
+            //Trying to get people working (first the number of)
+            if($this->workFree !== "workfree"){
+            $appliedFor = new CHoliday;
+            $appliedFor->GetBookings();
+            $appliedFor = $appliedFor->iAllStaffNumber;
+            $this->numbersworking = $appliedFor;
             }
 
             $cellDate = $this->currentDay;
@@ -163,7 +174,7 @@ class Calendar {
             }
 
         return '<li id="li-'.$this->currentDate.'" class="'.$this->workFree. ''. ($cellNumber%7==1?' start ':($cellNumber%7==0 || $cellNumber%7==6 ?' end ':' ')).
-        ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'<span class="red">'.$redDay.'</span></li>';
+        ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'<span class="red">'.$redDay.'</span><br>'.$this->numbersworking.'</li>';
     }
 
     /**
