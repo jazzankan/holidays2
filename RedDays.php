@@ -15,6 +15,9 @@ class RedDays
         $month = file_get_contents("http://api.dryg.net/dagar/v2.1/".$selectedYear."/".$selectedMonth."");
         $month = json_decode($month,true);
         foreach ($month['dagar'] as $day) {
+            if($day['arbetsfri dag'] == "Ja" && !isset($day['helgdag'])){
+                array_push($freeArray,array($day['datum'], ""));
+            }
             if($day['arbetsfri dag'] == "Ja" && isset($day['helgdag'])){
                 array_push($freeArray,array($day['datum'], $day['helgdag']));
             }

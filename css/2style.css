@@ -120,6 +120,12 @@ div#calendar ul.dates li .red {
     float:left;
     padding: 5px;
 }
+div#calendar ul.dates li .names {
+    position: relative;
+    left: -100px;
+    top: 6px;
+    color: blue;
+}
 
 
 div#calendar ul.dates li.end {
@@ -129,6 +135,8 @@ div#calendar ul.dates li.end {
 div#calendar ul.dates li.workfree {
     background-color: #F2BDC0;
 }
+
+
 
 :focus{
     outline:none;
