@@ -10,6 +10,7 @@ public $iAllStaff = array();
 public $iOnHoliday = "";
 public $iAllStaffNumber = 0;
 public $iComparray = array();
+public $iStaffworking = 0;
 public $iNamelength = array();
 public $iMerged = array();
 public $test = array();
@@ -25,25 +26,34 @@ $this->iMysqli->set_charset('utf8');
 }
 
 // -------------------------------------------------------------------------------------------
+public function GetUsers(){
 
-public function GetBookings(){
+    $this->ConnectToDatabase();
+
+    $query1 = "SELECT realname from user";
+
+    $result = $this->iMysqli->query($query1)
+    or die("Could not query database, query =<br/><pre>{$query1}</pre><br/>{$this->iMysqli->error}");
+    !$this->iMysqli->errno or die("<p>Query =<br/><pre>{$query1}</pre><br/>Error code: {$this->iMysqli->errno} ({$this->iMysqli->error})</p>");
+
+    while ($row = $result->fetch_array(MYSQLI_NUM)){
+        array_push($this->iAllStaff,$row[0]);
+    }
+    return $this->iAllStaff;
+}
+
+public function GetBookings($date, $allStaff){
+$time = strtotime($date);
+//var_dump($time);
 
 $this->ConnectToDatabase();
 
-$query1 = "SELECT realname from user";
+//$this->GetUsers();
 
-$result = $this->iMysqli->query($query1)
- or die("Could not query database, query =<br/><pre>{$query1}</pre><br/>{$this->iMysqli->error}");
- !$this->iMysqli->errno or die("<p>Query =<br/><pre>{$query1}</pre><br/>Error code: {$this->iMysqli->errno} ({$this->iMysqli->error})</p>");
- 
-while ($row = $result->fetch_array(MYSQLI_NUM)){
-array_push($this->iAllStaff,$row[0]);
-  }
- $this->iAllStaffNumber = count($this->iAllStaff);
-  
 $query2=
 "SELECT booking.startdate,booking.enddate,booking.type,booking.comment,user.userid,user.realname FROM booking
-join user ON booking.userid = user.userid
+join user ON booking.userid = user.userid 
+WHERE $time >= UNIX_TIMESTAMP(booking.startdate) AND $time <= UNIX_TIMESTAMP(booking.enddate)
 ORDER BY user.realname";
 
 $result2 = $this->iMysqli->query($query2) 
@@ -53,14 +63,17 @@ $result2 = $this->iMysqli->query($query2)
 // Check if there is a database error
 !$this->iMysqli->errno or die("<p>Query =<br/><pre>{$query2}</pre><br/>Error code: {$this->iMysqli->errno} ({$this->iMysqli->error})</p>");
 
-while ($row = $result2->fetch_assoc()){
-$temparray = $row;
-array_push($this->iComparray,$row['realname']);
-$namesworking = array_diff($this->iAllStaff,$this->iComparray);
-$temparray['numbersworking'] = $this->iAllStaffNumber;
-$temparray['namesworking'] = $namesworking;
-array_push($this->iBooking,$temparray);
-  }
+while ($row = $result2->fetch_assoc()) {
+    $temparray = $row;
+    array_push($this->iComparray, ($temparray['realname']));
+    //$namesworking = array_diff($this->iAllStaff, $this->iComparray);
+   // $temparray['namesworking'] = $namesworking;
+    array_push($this->iBooking, $temparray);
+}
+$this->iStaffworking = count($allStaff) - count($this->iBooking);
+$this->iBooking['numbersworking'] = $this->iStaffworking;
+$this->iBooking['namesworking'] = array_diff($allStaff, $this->iComparray);
+//var_dump($this->iBooking['numbersworking']);
 /* foreach($this->iUserids as $ids){
  	$this->iOnHoliday .= "," . $ids . "";
  }

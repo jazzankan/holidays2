@@ -3,7 +3,7 @@ require "CHoliday.php";
 
 $appliedFor = new CHoliday;
 $appliedFor->GetBookings();
-$appliedFor = $appliedFor->iBooking;
+$appliedFor = $appliedFor->iStaffworking;
 echo $appliedFor;
 //print_r($appliedFor);
 ?>

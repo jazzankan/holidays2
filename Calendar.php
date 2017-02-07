@@ -1,5 +1,6 @@
 <?php
 /**
+ *
  *@author  Xu Ding
  *@email   thedilab@gmail.com
  *@website http://www.StarTutorial.com
@@ -40,13 +41,28 @@ class Calendar {
 
     private $numbersworking = "";
 
+    private $namesworking = "";
+
+    private $allWorkers = array();
+
 
     /********************* PUBLIC **********************/
+
+    //Get names to select element
+
+    public function getWorkers(){
+        $workers = new CHoliday;
+        $workers = $workers->GetUsers();
+        $this->allWorkers = $workers;
+        sort($this->allWorkers);
+    }
 
     /**
      * print out the calendar
      */
     public function show() {
+
+        $this->getWorkers();
 
         if(null==$this->year&&isset($_GET['year'])){
 
@@ -120,6 +136,7 @@ class Calendar {
         $this->workFree = "";
         $redDay = "";
         $this->numbersworking = "";
+        $this->namesworking = "";
 
         if($this->currentDay==0){
 
@@ -142,12 +159,25 @@ class Calendar {
                 $this->workFree = "workfree";
             }
 
-            //Trying to get people working (first the number of)
+            //Get people working (first the number of)
             if($this->workFree !== "workfree"){
-            $appliedFor = new CHoliday;
-            $appliedFor->GetBookings();
-            $appliedFor = $appliedFor->iAllStaffNumber;
-            $this->numbersworking = $appliedFor;
+            $atJob = new CHoliday;
+            $atJob->GetBookings($this->currentDate, $this->allWorkers);
+            $atJob = $atJob->iBooking;
+            $numberAtJob = $atJob['numbersworking'];
+            if(!isset($atJob[0]['realname'])){
+               $namesAtJob = "Alla jobbar";
+            }
+            else {
+                $namesAtJob = $atJob['namesworking'];
+                sort($namesAtJob);
+                $namesAtJob = implode("<br>", $namesAtJob);
+            }
+            $this->numbersworking = "<b>$numberAtJob</b> jobbar:";
+            $this->namesworking = $namesAtJob;
+                //var_dump($atJob[1]['namesworking']);
+                //echo $this->namesworking;
+                //echo "Här tar det slut";
             }
 
             $cellDate = $this->currentDay;
@@ -174,7 +204,8 @@ class Calendar {
             }
 
         return '<li id="li-'.$this->currentDate.'" class="'.$this->workFree. ''. ($cellNumber%7==1?' start ':($cellNumber%7==0 || $cellNumber%7==6 ?' end ':' ')).
-        ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'<span class="red">'.$redDay.'</span><span class="names"><br>'.$this->numbersworking.'</span></li>';
+        ($cellDate==null?'mask':'').'"><span class="week">'.$this->weekText.'</span>'.$cellDate.'<span class="red">'.$redDay.'</span><span class="numbersw"><br>'.
+            $this->numbersworking.'</span><br><span class="namesw">'.$this->namesworking.'</span></li>';
     }
 
     /**
@@ -192,10 +223,21 @@ class Calendar {
 
         $preYear = $this->currentMonth==1?intval($this->currentYear)-1:$this->currentYear;
 
+        $working = "";
+        foreach ($this->allWorkers as $works) {
+            $working .= "<option value=$works>$works</option>";
+}
+
         return
             '<div class="header">'.
             '<a class="prev" href="'.$this->naviHref.'?month='.sprintf('%02d',$preMonth).'&year='.$preYear.'">Föregående</a>'.
             '<span class="title">'.strftime('%Y %B',strtotime($this->currentYear.'-'.$this->currentMonth.'-1')).'</span>'.
+            '<span class="search"> Ansök: '.
+            ' <form id="apply" name="apply" action="apply.php" method="post">
+            <select name="applicant" onchange="this.form.submit()">'.
+                  $working.
+                '</select></form>
+            </span>'.
             '<a class="next" href="'.$this->naviHref.'?month='.sprintf("%02d", $nextMonth).'&year='.$nextYear.'">Nästa</a>'.
             '</div>';
     }
