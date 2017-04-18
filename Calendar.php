@@ -4,6 +4,7 @@
  *@author  Xu Ding
  *@email   thedilab@gmail.com
  *@website http://www.StarTutorial.com
+ * some additions by Anders Fredriksson
  **/
 class Calendar {
 
@@ -48,7 +49,7 @@ class Calendar {
 
     /********************* PUBLIC **********************/
 
-    //Get names to select element
+    //Get names to select element, Anders
 
     public function getWorkers(){
         $workers = new CHoliday;
@@ -81,6 +82,8 @@ class Calendar {
         }else if(null==$this->month){
 
             $month = date("m",time());
+            // We want it to be summer or winter holiday time. Anders
+            $month = $month > 1 && $month < 9 ? 06 : 12;
 
         }
 
@@ -173,7 +176,14 @@ class Calendar {
                 sort($namesAtJob);
                 $namesAtJob = implode("<br>", $namesAtJob);
             }
-            $this->numbersworking = "<b>$numberAtJob</b> jobbar:";
+            $numcolor= "";
+            if($numberAtJob < 10){
+               $numcolor = "numred";
+            }
+            else {
+                $numcolor = "numgreen";
+            }
+            $this->numbersworking = "<span class=$numcolor><b>$numberAtJob</b> jobbar:</span>";
             $this->namesworking = $namesAtJob;
                 //var_dump($atJob[1]['namesworking']);
                 //echo $this->namesworking;
@@ -223,18 +233,19 @@ class Calendar {
 
         $preYear = $this->currentMonth==1?intval($this->currentYear)-1:$this->currentYear;
 
-        $working = "";
+        $working = "<option value='choose'>-- Namn --</option>";
         foreach ($this->allWorkers as $works) {
-            $working .= "<option value=$works>$works</option>";
+            $working .= "<option class='applname' value='$works[0];$works[1]'>$works[0]</option>";
 }
 
         return
             '<div class="header">'.
             '<a class="prev" href="'.$this->naviHref.'?month='.sprintf('%02d',$preMonth).'&year='.$preYear.'">Föregående</a>'.
+            '<span class="sinners" data-featherlight="lightbox.php">Ännu inte ansökt</span>'.
             '<span class="title">'.strftime('%Y %B',strtotime($this->currentYear.'-'.$this->currentMonth.'-1')).'</span>'.
             '<span class="search"> Ansök: '.
-            ' <form id="apply" name="apply" action="apply.php" method="post">
-            <select name="applicant" onchange="this.form.submit()">'.
+            '<form id="apply" name="apply" action="apply.php" method="post">
+            <select name="applicant">'.
                   $working.
                 '</select></form>
             </span>'.

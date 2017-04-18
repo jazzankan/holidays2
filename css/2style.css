@@ -1,4 +1,9 @@
 /*******************************Calendar Top Navigation*********************************/
+body {
+    margin: 10px;
+    background-image: url(../ep_naturalwhite.png);
+}
+
 div#calendar{
     margin:0px auto;
     padding:0px;
@@ -44,6 +49,24 @@ div#calendar div.header span.title{
 form{
     display: inline-block;
 }
+div#calendar div.header .sinners{
+    position:absolute;
+    margin-left: -285px;
+    width: 150px;
+    cursor: pointer;
+    background-color: #DDDDDD;
+    font-size: 12px;
+    font-weight: 600;
+    padding-left:5px;
+    padding-right: 5px;
+    color: darkred;
+    border-style:solid;
+    border-width: 4px;
+    border-color: #787878;
+    border-radius: 8px;
+    line-height: 32px;
+}
+
 div#calendar div.header .search{
     position:absolute;
     margin-left: 132px;
@@ -73,13 +96,13 @@ div#calendar div.header a.next{
 
 
 /*******************************Calendar Content Cells*********************************/
+
 div#calendar div.box-content{
-    border:1px solid #787878 ;
+    border:1px dotted darkred;
     border-top:none;
     overflow:hidden;
+    background-color: #FFF;
 }
-
-
 
 div#calendar ul.label{
     float:left;
@@ -143,16 +166,24 @@ div#calendar ul.dates li .red {
 }
 div#calendar ul.dates li .numbersw {
     position: relative;
-    left: -15px;
-    margin-top: 2px;
-    padding-bottom:0px;
+    left: -50px;
 }
+
+.numgreen {
+    color: green;
+}
+
+.numred {
+  color: red;
+}
+
 div#calendar ul.dates li .namesw {
     float:left;
     text-align: left;
-    margin-top: 0px;
+    padding-left: 30px;
+    margin-top: 5px;
     font-size: 0.72rem;
-    line-height: 96%;
+    /*line-height: 96%;*/
 }
 
 
@@ -172,4 +203,60 @@ div#calendar ul.dates li.workfree {
 
 div.clear{
     clear:both;
+}
+
+.newdaterangebutton{
+    margin-top:20px;
+}
+
+/* apply.php*/
+
+.container {
+    background-color: #FFF;
+    border: 1px dotted darkred;
+}
+
+.saved{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display:none;
+}
+ul {
+    list-style-type:none;
+    padding-left: 0pt;
+}
+
+.interval{
+    font-size: 1.10em;
+    margin-bottom: 15px;
+}
+.delete{
+    margin-left: 8px;
+}
+.btn-primary{
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+#backtolist{
+    margin-top:50px;
+    font-weight: bold;
+}
+
+/* login page */
+
+#login{
+    margin:auto;
+    margin-top: 40px;
+    padding: 10px;
+    border: dotted 1px darkred;
+    width: 20%;
+    min-width: 300px;
+    font-family: Arial;
+    background-color: #FFF;
+}
+
+.errormsg{
+    margin-top: 20px;
+    color: red;
 }
