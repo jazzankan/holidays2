@@ -10,14 +10,23 @@ $(document).ready(function(){
     }
 
     $(function() {
+    //In the spring the picker should show June-July to start with, in the autumn it should show DEcenber-January. Anders
+        var hy = new Date();
+        hyear = hy.getFullYear().toString();
+        var hm = new Date();
+        var hmonth = hm.getMonth();
+        var summerWinter = hyear + '-06-01';
+        if(hmonth > 7){
+            summerWinter = hyear + '-12-01';
+        }
 
         $('input[name="daterange"]').daterangepicker({
             autoUpdateInput: false,
             locale: {
                 cancelLabel: 'Rensa'
             },
-            startDate: '2017-06-01',
-            endDate: '2017-06-01'
+            startDate: summerWinter,
+            endDate: summerWinter
 
         });
 
